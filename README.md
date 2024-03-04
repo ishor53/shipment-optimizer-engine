@@ -8,7 +8,7 @@ Typescript based engine to optimize shipment destinations.
     npm install --save typescript @types/node
 
 3. Once you have your environment setup, clone the project, go to your repo directory and run the following in your command line: <br>
-tsc ShipmentOptimizer.ts && node ShipmentOptimizer.js [your shipment destinations file] [your driver names file]
+tsc ShipmentOptimizer.ts && node ShipmentOptimizer.js [your shipment destinations file] [your driver names file] <br>
      Example: <br>
         If you clone this repo you would run: <br>
         tsc ShipmentOptimizer.ts && node ShipmentOptimizer.js shipment.txt driver.txt <br>
