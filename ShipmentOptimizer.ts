@@ -1,5 +1,3 @@
-import * as fs from 'fs';
-
 class Driver {
     name: string;
     nameLength: number;
@@ -55,7 +53,7 @@ class ShipmentDestination {
 // calculate the suitability score for a driver and shipment destination pair
 function calculateScore(driver: Driver, shipment: ShipmentDestination): number {
     
-    const baseScore = shipment.length % 2 === 0 ? driver.vowels * 1.5 : driver.consonants * 1;
+    const baseScore = shipment.length % 2 === 0 ? driver.vowels * 1.5 : driver.consonants;
 
     const commonFactors = getCommonFactors(driver.nameLength, shipment.length);
 
@@ -65,8 +63,13 @@ function calculateScore(driver: Driver, shipment: ShipmentDestination): number {
 
 // search for common factors between two numbers
 function getCommonFactors(a: number, b: number): number[] {
-    return Array.from({ length: Math.min(a, b) - 1 }, (_, i) => i + 2)
-        .filter(i => a % i === 0 && b % i === 0);
+    const factors: number[] = [];
+    for (let i = 2, max = Math.min(a, b); i <= max; i++) {
+        if (a % i === 0 && b % i === 0) {
+            factors.push(i);
+        }
+    }
+    return factors;
 }
 
 // search for the best shipment assignment for a given set of destinations and drivers
@@ -104,27 +107,31 @@ function computePermutations<T>(array: T[]): T[][] {
         array.flatMap((item, i) => computePermutations([...array.slice(0, i), ...array.slice(i + 1)]).map(perm => [item, ...perm]));
 }
 
-// data reader function
-function readDataFromFile(filePath: string): string[] {
-    try {
-        const fileContent = fs.readFileSync(filePath, 'utf-8').trim();
-        return fileContent.split('\n');
-    } catch (error) {
-        throw new Error(`Unable to read file "${filePath}": ${error.message}`);
-    }
-}
-
 function printAssignmentDetails(assignment: ShipmentDestination[], drivers: Driver[]): void {
     assignment.forEach((s, i) => console.log(s.destinationAddress.toUpperCase(), 'is assigned to', drivers[i].name.toUpperCase()));
 }
 
 function main() {
     try {
-        // Read shipment destination and driver data from files and create objects
-        const shipmentDestinations = readDataFromFile(process.argv[2]).map(line => new ShipmentDestination(line));
-        const drivers = readDataFromFile(process.argv[3]).map(name => new Driver(name));
+        const shipmentDestinations = [
+            '123 Elm Street, Scary Town, IN, 55555',
+            '1345 Sesame Street, Sesame Town, IN, 55555',
+            '3532 Pacific Beach Drive, Pacific Beach, CA, 55555',
+            '11 Atlantic Avenue, Atlantic City, NJ, 55555',
+            '123123 Beach Boulevard, The Beach, CA, 12312',
+            '5235 Hotel Circle, San Diego, CA, 12314',
+            '623 Evergreen Terrace, Portland, OR, 15125'
+        ].map(val => new ShipmentDestination(val));
 
-        // search optimal assigment from data
+        const drivers = [
+            'Charles Darwin', 'Marcus Aurelius',
+            'John Doe',
+            'Jane Doe',
+            'Bruce Wayne',
+            'Peter Parker',
+            'Clark Kent'
+        ].map(val => new Driver(val));
+
         const [totalScore, assignment] = searchOptimalAssignment(shipmentDestinations, drivers);
 
         console.log('Total Suitability Score:', totalScore);
@@ -135,6 +142,4 @@ function main() {
     }
 }
 
-// execute the main function to start the application
 main();
-

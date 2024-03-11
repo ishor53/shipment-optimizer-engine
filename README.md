@@ -8,23 +8,26 @@ Typescript based engine to optimize shipment destinations.
     npm install --save typescript @types/node
 
 3. Once you have your environment setup, clone the project, go to your repo directory and run the following in your command line: <br>
-tsc ShipmentOptimizer.ts && node ShipmentOptimizer.js [your shipment destinations file] [your driver names file] <br>
+tsc ShipmentOptimizer.ts && node ShipmentOptimizer.js 
      Example: <br>
         If you clone this repo you would run: <br>
-        tsc ShipmentOptimizer.ts && node ShipmentOptimizer.js shipment.txt driver.txt <br>
+        tsc ShipmentOptimizer.ts && node ShipmentOptimizer.js
 
 
 # Constraints:
- 1. The engine assumes that the file provide in the command line is in the same directory as the main file is in.
+ 1. The engine do not handle malformed input for addresses or name lines.
 
- 2. The engine do not handle malformed input for addresses or name lines.
+ 2. If the street name consists of '.' characters it strips that and does not count that in length.
 
- 3. If the street name consists of '.' characters it strips that and does not count that in length.
+ 3. Output is printed as:
 
- 4. Output is printed as:
-
-    Total Suitability Score: 34 <br>
+    Total Suitability Score:  <br>
     Optimal Assignment: <br>
     (UPPER CASE ADDRESS) is assigned to (UPPER CASE NAME) <br>
+
+# Revisions(3-11-2024):
+ 1. The engine now supplies test values as required rather than reading from file.
+
+ 2. The Array.from in getCommonFactors is refactored to use for loop since this can be performance critical. Similarly there are other opportunities in the code where forEach, maps , and reduce could be refactored for performance improvement.
 
 
