@@ -30,4 +30,6 @@ tsc ShipmentOptimizer.ts && node ShipmentOptimizer.js
 
  2. The Array.from in getCommonFactors is refactored to use for loop since this can be performance critical. Similarly there are other opportunities in the code where forEach, maps , and reduce could be refactored for performance improvement.
 
+ 3. The regexes and other constants also could be updated into a constant and reused for minor performance upgrades.
+
 
